@@ -1,0 +1,171 @@
+﻿@model IEnumerable<AppName.Models.Form>
+
+@{
+    ViewData["Title"] = "Forms";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Forms</h2>
+<br />
+<p>
+    @Html.ActionLink("+ New Form", "New", "Forms", null, new { @class = "btn btn-primary" })
+</p>
+<br />
+<table id="table" class="table table-hover table-bordered" style="width: 90%">
+    <thead>
+        <tr style="background: #eaeaea">
+            <th width="20%">Employee Name</th>
+            <th width="20%">Employee ID</th>
+            <th width="20%">Assessment Period</th>
+            <th width="20%">Status</th>
+            <th width="10%">Edit</th>
+            <th width="10%">View</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- TODO: Remove test data -->
+        <tr>
+            <td>Andy Bernard</td>
+            <td>0001</td>
+            <td>Fall 2020</td>
+            <td>Draft</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Angela Martin</td>
+            <td>0002</td>
+            <td>Fall 2020</td>
+            <td>Draft</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Kelly Kapoor</td>
+            <td>0003</td>
+            <td>Fall 2020</td>
+            <td>Draft</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Creed Bratton</td>
+            <td>0004</td>
+            <td>Fall 2020</td>
+            <td>Complete</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Kevin Malone</td>
+            <td>0005</td>
+            <td>Fall 2020</td>
+            <td>Complete</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Oscar Martinez</td>
+            <td>0006</td>
+            <td>Fall 2020</td>
+            <td>Complete</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Stanley Hudson</td>
+            <td>0007</td>
+            <td>Fall 2020</td>
+            <td>Complete</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Ryan Howard</td>
+            <td>0008</td>
+            <td>Fall 2020</td>
+            <td>Complete</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Pam Beesly</td>
+            <td>0009</td>
+            <td>Fall 2020</td>
+            <td>Complete</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+        <tr>
+            <td>Jim Halpert</td>
+            <td>0010</td>
+            <td>Fall 2020</td>
+            <td>Complete</td>
+            <td>Edit</td>
+            <td>View</td>
+        </tr>
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        //Search box, pagination
+        $(document).ready(function() {
+            $('#table').DataTable({
+                "pageLength": 8,
+                "lengthChange": false,
+                "ordering": false,
+                "columnDefs": [
+                    { "searchable": false, "targets": [1,2,3,4,5] }
+                ],
+                language: { search: "", searchPlaceholder: "Search by employee..." },
+                "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
+            });
+        });
+
+        $.fn.dataTable.ext.classes.sPageButton = 'pagination-sm';
+        $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
+        $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
+
+        //TODO: Populate table
+        //Only forms created by user, alphabetically by first name, drafts floated to top
+        //Create working Edit and View links to put in table
+
+        //Conditional formatting for drafts
+        var table = document.getElementById("table");
+        var tr = table.getElementsByTagName("tr");
+        var i, td, value;
+        for (i = 0; i < tr.length; i++)
+        {
+            td = tr[i].getElementsByTagName("td")[3];
+            if (td)
+            {
+                value = td.innerText;
+                if (value == "Draft") {
+                    td.classList.add("draft");
+                }
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        .dataTables_filter input {
+            width: 116%;
+        }
+
+        .dataTables_info {
+            font-size: small;
+        }
+
+        .pagination {
+            float: right;
+            margin-right: 18%;
+        }
+
+        .draft {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+}
