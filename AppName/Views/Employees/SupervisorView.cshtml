@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Employees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Employees</h2>
+<br />
+<table id="table" class="table table-hover table-bordered" style="width: 48%">
+    <thead>
+        <tr style="background: #eaeaea">
+            <th width="50%">Employee Name</th>
+            <th width="50%">Employee ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- TODO: Remove test data -->
+        <tr>
+            <td>Andy Bernard</td>
+            <td>0001</td>
+        </tr>
+        <tr>
+            <td>Angela Martin</td>
+            <td>0002</td>
+        </tr>
+        <tr>
+            <td>Creed Bratton</td>
+            <td>0003</td>
+        </tr>
+        <tr>
+            <td>Kelly Kapoor</td>
+            <td>0004</td>
+        </tr>
+        <tr>
+            <td>Kevin Malone</td>
+            <td>0005</td>
+        </tr>
+        <tr>
+            <td>Oscar Martinez</td>
+            <td>0006</td>
+        </tr>
+        <tr>
+            <td>Stanley Hudson</td>
+            <td>0007</td>
+        </tr>
+        <tr>
+            <td>Ryan Howard</td>
+            <td>0008</td>
+        </tr>
+        <tr>
+            <td>Pam Beesly</td>
+            <td>0009</td>
+        </tr>
+        <tr>
+            <td>Jim Halpert</td>
+            <td>0010</td>
+        </tr>
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        //Search box, pagination
+        $(document).ready(function() {
+            $('#table').DataTable({
+                "pageLength": 8,
+                "lengthChange": false,
+                "ordering": false,
+                "columnDefs": [
+                    { "searchable": false, "targets": [1] }
+                ],
+                language: { search: "", searchPlaceholder: "Search by employee..." },
+                "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-1'p>>"
+            });
+        });
+
+        $.fn.dataTable.ext.classes.sPageButton = 'pagination-sm';
+        $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
+        $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
+
+        //TODO: Populate table
+        //Employees supervised by user, alphabetically by first name
+    </script>
+
+    <style type="text/css">
+        .dataTables_filter input {
+            width: 116%;
+        }
+
+        .dataTables_info {
+            font-size: small;
+        }
+
+        .pagination {
+            float: right;
+            margin-right: 18%;
+        }
+    </style>
+}
