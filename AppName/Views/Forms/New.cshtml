@@ -11,6 +11,7 @@
     <div class="col-lg-7">
         <div class="bs-component">
             <form autocomplete="off" asp-controller="Forms" asp-action="Save" method="post">
+                <!-- Name, title, and assessment period fields -->
                 <fieldset>
                     <div class="form-group row">
                         <label asp-for="Employee" class="col-sm-4 col-form-label">Employee Name:</label>
@@ -32,6 +33,7 @@
                     </div>
                 </fieldset>
                 <hr />
+                <!-- Section 1: KPI metrics, actions, and results fields-->
                 <fieldset>
                     <legend class="text-muted">Section I: Key Performance Indicators</legend>
                     <br />
@@ -106,6 +108,7 @@
                     </div>
                 </fieldset>
                 <hr />
+                <!-- Section 2: leadership behavior ratings fields -->
                 <fieldset>
                     <legend class="text-muted">Section II: Leadership Behaviors</legend>
                     <br />
@@ -274,6 +277,7 @@
                     </div>
                 </fieldset>
                 <hr />
+                <!-- Summary and opportunities fields -->
                 <fieldset>
                     <div class="form-group">
                         <label asp-for="Summary" class="col-form-label">Summary:</label>
@@ -284,7 +288,8 @@
                         <textarea asp-for="Opportunities" class="form-control" rows="3"></textarea>
                     </div>
                 </fieldset>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
     </div>
@@ -298,8 +303,8 @@
 
 @section scripts {
     <script>
-            //TODO: Populate datalist and remove test data
-            //Names of employees under user as value ordered alphabetically by first name with data - value being the employee's ID
+        //TODO: Populate datalist and remove test data
+        //Names of employees under user as value ordered alphabetically by first name with data - value being the employee's ID
     </script>
 
     <style type="text/css">
