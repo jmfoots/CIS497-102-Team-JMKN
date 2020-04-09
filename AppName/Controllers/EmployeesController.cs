@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using AppName.Models;
 
 namespace AppName.Controllers
 {
@@ -31,7 +32,8 @@ namespace AppName.Controllers
             return View("New");
         }
 
-        public IActionResult Save()
+        [HttpPost]
+        public IActionResult Save(Employee employee)
         {
             //TODO: Save form
             return RedirectToAction("Index", "Employees");

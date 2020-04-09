@@ -28,26 +28,50 @@ namespace AppName.Models
         //0 = not deleted, 1 = deleted
         public bool Deleted { get; set; }
 
-        //3 ratings of 1-5
-        public int[] Communication { get; set; }
+        //Rating of 1-5
+        public int Communication1 { get; set; }
+
+        //Rating of 1-5
+        public int Communication2 { get; set; }
+
+        //Rating of 1-5
+        public int Communication3 { get; set; }
 
         //Average of above ratings
         public float CommunicationAvg { get; set; }
 
-        //3 ratings of 1-5
-        public int[] Appreciation { get; set; }
+        //Rating of 1-5
+        public int Appreciation1 { get; set; }
+
+        //Rating of 1-5
+        public int Appreciation2 { get; set; }
+
+        //Rating of 1-5
+        public int Appreciation3 { get; set; }
 
         //Average of above ratings
         public float AppreciationAvg { get; set; }
 
-        //3 ratings of 1-5
-        public int[] Development { get; set; }
+        //Rating of 1-5
+        public int Development1 { get; set; }
+
+        //Rating of 1-5
+        public int Development2 { get; set; }
+
+        //Rating of 1-5
+        public int Development3 { get; set; }
 
         //Average of above ratings
         public float DevelopmentAvg { get; set; }
 
-        //3 ratings of 1-5
-        public int[] Teamwork { get; set; }
+        //Rating of 1-5
+        public int Teamwork1 { get; set; }
+
+        //Rating of 1-5
+        public int Teamwork2 { get; set; }
+
+        //Rating of 1-5
+        public int Teamwork3 { get; set; }
 
         //Average of above ratings
         public float TeamworkAvg { get; set; }

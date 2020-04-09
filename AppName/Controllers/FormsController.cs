@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using AppName.Models;
 
 namespace AppName.Controllers
 {
@@ -11,7 +12,7 @@ namespace AppName.Controllers
         public IActionResult Index()
         {
             //TODO: Role check
-            if (true)
+            if (false)
             {
                 return View("AdminView");
             }
@@ -31,7 +32,8 @@ namespace AppName.Controllers
             return View("New");
         }
 
-        public IActionResult Save()
+        [HttpPost]
+        public IActionResult Save(Form form)
         {
             //TODO: Save form
             return RedirectToAction("Index", "Forms");
