@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<AppName.Models.Employee>
+
+@{
     ViewData["Title"] = "Employees";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -61,7 +63,7 @@
 {
     <script>
         //Search box, pagination
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#table').DataTable({
                 "pageLength": 8,
                 "lengthChange": false,
@@ -78,8 +80,8 @@
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
 
-        //TODO: Populate table
-        //Employees supervised by user, alphabetically by first name
+            //TODO: Populate table
+            //Employees supervised by user, alphabetically by first name
     </script>
 
     <style type="text/css">
