@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,13 +9,13 @@ namespace AppName.Models
     public class Form
     {
         //Primary key
-        public int Id { get; set; }
+        public int FormID { get; set; }
 
         //Foreign key reference to Supervisor
-        public Supervisor CreatedBy { get; set; }
+        public int CreatedByID { get; set; }
 
         //Foreign key reference to Employee
-        public Employee Employee { get; set; }
+        public int EmployeeID { get; set; }
 
         //Employee's job title
         public string Title { get; set; }
@@ -38,7 +39,7 @@ namespace AppName.Models
         public int Communication3 { get; set; }
 
         //Average of above ratings
-        public float CommunicationAvg { get; set; }
+        public decimal CommunicationAvg { get; set; }
 
         //Rating of 1-5
         public int Appreciation1 { get; set; }
@@ -50,7 +51,7 @@ namespace AppName.Models
         public int Appreciation3 { get; set; }
 
         //Average of above ratings
-        public float AppreciationAvg { get; set; }
+        public decimal AppreciationAvg { get; set; }
 
         //Rating of 1-5
         public int Development1 { get; set; }
@@ -62,7 +63,7 @@ namespace AppName.Models
         public int Development3 { get; set; }
 
         //Average of above ratings
-        public float DevelopmentAvg { get; set; }
+        public decimal DevelopmentAvg { get; set; }
 
         //Rating of 1-5
         public int Teamwork1 { get; set; }
@@ -74,7 +75,7 @@ namespace AppName.Models
         public int Teamwork3 { get; set; }
 
         //Average of above ratings
-        public float TeamworkAvg { get; set; }
+        public decimal TeamworkAvg { get; set; }
 
         //Quality metric
         public string Quality { get; set; }

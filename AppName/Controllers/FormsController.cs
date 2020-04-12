@@ -28,7 +28,7 @@ namespace AppName.Controllers
         public IActionResult Edit()
         {
             //TODO: Role check
-            //TODO: Load information
+            //TODO: Load information into form
             return View("New");
         }
 
@@ -36,6 +36,11 @@ namespace AppName.Controllers
         public IActionResult Save(Form form)
         {
             //TODO: Save form
+            //Check completion and set Complete appropriately
+            //If completed and new form: Set Deleted = 0, set CreatedBy, set Id, calculate and set averages
+            //If completed and edited form: Calculate and set averages
+            //If incomplete and new form: Set Deleted = 0, set CreatedBy, set Id, leave averages unset
+            //If incomplete and edited form: Leave averages unset
             return RedirectToAction("Index", "Forms");
         }
 
