@@ -24,15 +24,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Id" class="col-sm-4 col-form-label">Employee ID:</label>
+                    <label asp-for="EmployeeID" class="col-sm-4 col-form-label">Employee ID:</label>
                     <div class="col-sm-8">
-                        <input asp-for="Id" type="text" class="form-control" placeholder="Enter Employee ID" />
+                        <input asp-for="EmployeeID" type="text" class="form-control" placeholder="Enter Employee ID" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Supervisor" class="col-sm-4 col-form-label">Supervisor Name:</label>
+                    <label asp-for="SupervisorID" class="col-sm-4 col-form-label">Supervisor Name:</label>
                     <div class="col-sm-8">
-                        <input asp-for="Supervisor" type="text" list="supervisors" class="form-control" placeholder="Enter Supervisor Name" />
+                        <input asp-for="SupervisorID" type="text" list="supervisors" class="form-control" placeholder="Enter Supervisor Name" />
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -41,15 +41,11 @@
     </div>
 </div>
 
-<datalist id="supervisors">
-    <option data-value="0001" value="Dwight Schrute"/>
-    <option data-value="0002" value="Michael Scott"/>
-    <option data-value="0003" value="Toby Flenderson"/>
-</datalist>
+<datalist id="supervisors"></datalist>
 
 @section scripts {
     <script>
-        //TODO: Populate datalist and remove test data
+        //TODO: Populate datalist
         //All supervisor names as value ordered alphabetically by first name with data - value being the supervisor's ID
     </script>
 }

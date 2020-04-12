@@ -9,7 +9,8 @@ namespace AppName.Models
     public class Employee
     {
         //Primary key
-        public int Id { get; set; }
+        [Key]
+        public int EmployeeID { get; set; }
 
         //Employee's first name
         public string FirstName { get; set; }
@@ -18,6 +19,6 @@ namespace AppName.Models
         public string LastName { get; set; }
 
         //Foreign key reference to Supervisor
-        public Supervisor Supervisor { get; set; }
+        public int SupervisorID { get; set; }
     }
 }

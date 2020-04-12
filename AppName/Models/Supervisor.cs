@@ -9,7 +9,8 @@ namespace AppName.Models
     public class Supervisor
     {
         //Primary key
-        public int Id { get; set; }
+        [Key]
+        public int SupervisorID { get; set; }
 
         //Supervisor's first name
         public string FirstName { get; set; }
