@@ -9,14 +9,22 @@ namespace AppName.Controllers
 {
     public class EmployeesController : Controller
     {
+        private readonly ConnectionStringClass _cc;
+
+        public EmployeesController(ConnectionStringClass cc)
+        {
+            _cc = cc;
+        }
         public IActionResult Index()
         {
+            var results = _cc.Employee.ToList();
             //TODO: Role check
+
             if (true)
             {
-                return View("AdminView");
+                return View("AdminView", results);
             }
-            return View("SupervisorView");
+            return View("SupervisorView", results); 
         }
 
         public IActionResult New()

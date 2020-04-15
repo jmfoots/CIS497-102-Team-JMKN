@@ -9,14 +9,21 @@ namespace AppName.Controllers
 {
     public class FormsController : Controller
     {
+        private readonly ConnectionStringClass _cc;
+
+        public FormsController(ConnectionStringClass cc)
+        {
+            _cc = cc;
+        }
         public IActionResult Index()
         {
+            var results = _cc.Form.ToList();
             //TODO: Role check
             if (false)
             {
-                return View("AdminView");
+                return View("AdminView", results);
             }
-            return View("SupervisorView");
+            return View("SupervisorView", results);
         }
 
         public IActionResult New()

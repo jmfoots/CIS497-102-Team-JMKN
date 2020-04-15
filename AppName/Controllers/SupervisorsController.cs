@@ -9,10 +9,17 @@ namespace AppName.Controllers
 {
     public class SupervisorsController : Controller
     {
-        public IActionResult Index()
+        private readonly ConnectionStringClass _cc;
+
+        public SupervisorsController(ConnectionStringClass cc)
+        {
+            _cc = cc;
+        }
+            public IActionResult Index()
         {
             //TODO: Role check
-            return View();
+            var results = _cc.Supervisor.ToList();
+            return View(results);
         }
 
         public IActionResult New()
