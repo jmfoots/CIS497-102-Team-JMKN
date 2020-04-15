@@ -23,6 +23,7 @@ namespace AppName.Controllers
             {
                 var viewModel = from f in _cc.Form
                                 where f.Complete == true
+                                where f.Deleted == false
                                 from e in _cc.Employee
                                 where f.Employee == e.EmployeeID
                                 from s in _cc.Supervisor
@@ -38,6 +39,7 @@ namespace AppName.Controllers
 
                 var viewModel = from f in _cc.Form
                                 where f.CreatedBy == UserID
+                                where f.Deleted == false
                                 from e in _cc.Employee
                                 where f.Employee == e.EmployeeID
                                 from s in _cc.Supervisor
