@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppName.Models.Employee>
+﻿@model IEnumerable<AppName.ViewModels.EmployeesListViewModel>
 
 @{
     ViewData["Title"] = "Employees";
@@ -12,44 +12,37 @@
 </p>
 <br />
 
-<table class="table">
+<table id ="table" class="table table-hover table-bordered" style="width: 76%">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SupervisorID)
-            </th>
-            <th></th>
+        <tr style="background: #eaeaea">
+            <th width="20%">Employee Name</th>
+            <th width="20%">Employee ID</th>
+            <th width="20%">Supervisor</th>
+            <th width="20%">Edit</th>
+            <th width="20%">Delete</th>
         </tr>
     </thead>
     <tbody>
+        <!-- TODO: Create working Edit and Delete links to put in table -->
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EmployeeID)
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                    @Html.DisplayFor(modelItem => item.Employee.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => item.Employee.EmployeeID)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
+                    @Html.DisplayFor(modelItem => item.Supervisor.FirstName)
+                    @Html.DisplayFor(modelItem => item.Supervisor.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SupervisorID)
+                    @Html.ActionLink("Edit", "Edit", "Employees")
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Delete", "Delete")
                 </td>
             </tr>
         }
@@ -76,10 +69,6 @@
         $.fn.dataTable.ext.classes.sPageButton = 'pagination-sm';
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
-
-        //TODO: Populate table
-        //All employees, alphabetically by first name
-        //Create working Edit and Delete links to put in table
 
         //TODO: Create delete bootbox
     </script>

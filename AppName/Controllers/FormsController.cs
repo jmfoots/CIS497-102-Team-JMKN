@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AppName.Models;
+using AppName.ViewModels;
 
 namespace AppName.Controllers
 {
@@ -17,13 +18,34 @@ namespace AppName.Controllers
         }
         public IActionResult Index()
         {
-            var results = _cc.Form.ToList();
             //TODO: Role check
-            if (false)
+            if (true)
             {
-                return View("AdminView", results);
+                var viewModel = from f in _cc.Form
+                                where f.Complete == true
+                                from e in _cc.Employee
+                                where f.Employee == e.EmployeeID
+                                from s in _cc.Supervisor
+                                where f.CreatedBy == s.SupervisorID
+                                orderby e.FirstName
+                                select new FormsListViewModel { Form = f, Employee = e, Supervisor = s };
+                return View("SupervisorView", viewModel);
             }
-            return View("SupervisorView", results);
+            else
+            {
+                //TODO: Get ID of user
+                var UserID = 1;
+
+                var viewModel = from f in _cc.Form
+                                where f.CreatedBy == UserID
+                                from e in _cc.Employee
+                                where f.Employee == e.EmployeeID
+                                from s in _cc.Supervisor
+                                where f.CreatedBy == s.SupervisorID
+                                orderby e.FirstName, f.Complete
+                                select new FormsListViewModel { Form = f, Employee = e, Supervisor = s };
+                return View("SupervisorView", viewModel);
+            }
         }
 
         public IActionResult New()

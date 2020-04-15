@@ -11,36 +11,43 @@
     @Html.ActionLink("+ New Supervisor Account", "New", "Supervisors", null, new { @class = "btn btn-primary" })
 </p>
 <br />
-<table class="table">
+<table id="table" class="table table-hover table-bordered" style="width: 90%">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SupervisorID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th></th>
+        <tr style="background: #eaeaea">
+            <th width="20%">Supervisor Name</th>
+            <th width="20%">Supervisor ID</th>
+            <th width="20%">Username</th>
+            <th width="20%">Password Changed</th>
+            <th width="10%">Edit</th>
+            <th width="10%">Delete</th>
         </tr>
     </thead>
     <tbody>
+        <!-- TODO: Create working Resend, Edit, and Delete links to put in table -->
+        <!-- TODO: Add account information -->
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SupervisorID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupervisorID)
+            </td>
+            <td>
+                example@gmail.com
+            </td>
+            <td>
+                Yes
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Supervisors")
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete")
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -66,8 +73,6 @@
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
 
-        //TODO: Populate table
-        //All supervisors, alphabetically by first name
         //Create working Resend, Edit, and Delete links to put in table
 
         //TODO: Create delete bootbox

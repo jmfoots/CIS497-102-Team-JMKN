@@ -11,10 +11,10 @@ namespace AppName.Models
         //Primary key
         public int FormID { get; set; }
 
-        //Foreign key reference to Supervisor
+        //Foreign key reference to Employee
         public int Employee { get; set; }
 
-        //Foreign key reference to Employee
+        //Foreign key reference to Supervisor
         public int CreatedBy { get; set; }
 
         //Employee's job title
