@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppName.Models.Form>
+﻿@model IEnumerable<AppName.ViewModels.FormsListViewModel>
 
 @{
     ViewData["Title"] = "Forms";
@@ -11,232 +11,51 @@
     @Html.ActionLink("+ New Form", "New", "Forms", null, new { @class = "btn btn-primary" })
 </p>
 <br />
-<table class="table">
+<table id="table" class="table table-hover table-bordered" style="width: 90%">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FormID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Period)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Complete)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Communication1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Communication2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Communication3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CommunicationAvg)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Appreciation1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Appreciation2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Appreciation3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppreciationAvg)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Development1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Development2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Development3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DevelopmentAvg)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teamwork1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teamwork2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teamwork3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TeamworkAvg)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quality)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QualityAr)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Service)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ServiceAr)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Finance)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FinanceAr)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.People)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PeopleAr)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Growth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GrowthAr)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Summary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Opportunities)
-            </th>
-            <th></th>
+        <tr style="background: #eaeaea">
+            <th width="20%">Employee Name</th>
+            <th width="20%">Employee ID</th>
+            <th width="20%">Assessment Period</th>
+            <th width="20%">Status</th>
+            <th width="10%">Edit</th>
+            <th width="10%">View</th>
         </tr>
     </thead>
     <tbody>
+        <!-- TODO: Create working Edit and View links to put in table -->
         @foreach (var item in Model)
         {
-            <tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                @Html.DisplayFor(modelItem => item.Employee.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.EmployeeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Form.Period)
+            </td>
+            @if (item.Form.Complete)
+            {
                 <td>
-                    @Html.DisplayFor(modelItem => item.FormID)
+                    Complete
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee)
+            }
+            else
+            {
+                <td style="color: red; font-weight: bold">
+                    Draft
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Period)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Complete)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Deleted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Communication1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Communication2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Communication3)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommunicationAvg)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Appreciation1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Appreciation2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Appreciation3)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AppreciationAvg)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Development1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Development2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Development3)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DevelopmentAvg)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Teamwork1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Teamwork2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Teamwork3)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TeamworkAvg)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quality)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QualityAr)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Service)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServiceAr)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Finance)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FinanceAr)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.People)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PeopleAr)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Growth)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GrowthAr)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Summary)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Opportunities)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
-            </tr>
+            }
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Forms")
+            </td>
+            <td>
+                @Html.ActionLink("View", "Export", "Forms")
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -245,13 +64,13 @@
 {
     <script>
         //Search box, pagination
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#table').DataTable({
                 "pageLength": 8,
                 "lengthChange": false,
                 "ordering": false,
                 "columnDefs": [
-                    { "searchable": false, "targets": [1,2,3,4,5] }
+                    { "searchable": false, "targets": [1, 2, 3, 4, 5] }
                 ],
                 language: { search: "", searchPlaceholder: "Search by employee..." },
                 "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
@@ -262,19 +81,13 @@
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
 
-        //TODO: Populate table
-        //Only forms created by user, alphabetically by first name, drafts floated to top
-        //Create working Edit and View links to put in table
-
         //Conditional formatting for drafts
         var table = document.getElementById("table");
         var tr = table.getElementsByTagName("tr");
         var i, td, value;
-        for (i = 0; i < tr.length; i++)
-        {
+        for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[3];
-            if (td)
-            {
+            if (td) {
                 value = td.innerText;
                 if (value == "Draft") {
                     td.classList.add("draft");

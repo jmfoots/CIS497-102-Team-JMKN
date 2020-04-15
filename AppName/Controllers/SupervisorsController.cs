@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AppName.Models;
+using AppName.ViewModels;
 
 namespace AppName.Controllers
 {
@@ -18,8 +19,10 @@ namespace AppName.Controllers
             public IActionResult Index()
         {
             //TODO: Role check
-            var results = _cc.Supervisor.ToList();
-            return View(results);
+            var viewModel = from s in _cc.Supervisor
+                            orderby s.FirstName
+                            select new SupervisorsListViewModel { Supervisor = s };
+            return View(viewModel);
         }
 
         public IActionResult New()

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppName.Models.Employee>
+﻿@model IEnumerable<AppName.ViewModels.EmployeesListViewModel>
 
 @{
     ViewData["Title"] = "Employees";
@@ -7,22 +7,11 @@
 
 <h2>Employees</h2>
 <br />
-<table class="table">
+<table id="table" class="table table-hover table-bordered" style="width: 48%">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SupervisorID)
-            </th>
-            <th></th>
+        <tr style="background: #eaeaea">
+            <th width="50%">Employee Name</th>
+            <th width="50%">Employee ID</th>
         </tr>
     </thead>
     <tbody>
@@ -30,21 +19,11 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EmployeeID)
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                    @Html.DisplayFor(modelItem => item.Employee.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SupervisorID)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.DisplayFor(modelItem => item.Employee.EmployeeID)
                 </td>
             </tr>
         }
@@ -72,8 +51,8 @@
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
 
-            //TODO: Populate table
-            //Employees supervised by user, alphabetically by first name
+        //TODO: Populate table
+        //Employees supervised by user, alphabetically by first name
     </script>
 
     <style type="text/css">
