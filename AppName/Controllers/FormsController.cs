@@ -29,7 +29,7 @@ namespace AppName.Controllers
                                 where f.CreatedBy == s.SupervisorID
                                 orderby e.FirstName
                                 select new FormsListViewModel { Form = f, Employee = e, Supervisor = s };
-                return View("SupervisorView", viewModel);
+                return View("AdminView", viewModel);
             }
             else
             {

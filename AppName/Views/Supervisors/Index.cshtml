@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppName.Models.Supervisor>
+﻿@model IEnumerable<AppName.ViewModels.SupervisorsListViewModel>
 
 @{
     ViewData["Title"] = "Supervisors";
@@ -27,27 +27,27 @@
         <!-- TODO: Add account information -->
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SupervisorID)
-            </td>
-            <td>
-                example@gmail.com
-            </td>
-            <td>
-                Yes
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", "Supervisors")
-            </td>
-            <td>
-                @Html.ActionLink("Delete", "Delete")
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supervisor.FirstName)
+                    @Html.DisplayFor(modelItem => item.Supervisor.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supervisor.SupervisorID)
+                </td>
+                <td>
+                    example@gmail.com
+                </td>
+                <td>
+                    Yes
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Supervisors")
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete")
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -56,13 +56,13 @@
 {
     <script>
         //Search box, pagination
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#table').DataTable({
                 "pageLength": 8,
                 "lengthChange": false,
                 "ordering": false,
                 "columnDefs": [
-                    { "searchable": false, "targets": [1,2,3,4,5] }
+                    { "searchable": false, "targets": [1, 2, 3, 4, 5] }
                 ],
                 language: { search: "", searchPlaceholder: "Search by supervisor..." },
                 "dom": "<'row'<'col-sm-12'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
@@ -73,9 +73,9 @@
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
 
-        //Create working Resend, Edit, and Delete links to put in table
+            //Create working Resend, Edit, and Delete links to put in table
 
-        //TODO: Create delete bootbox
+            //TODO: Create delete bootbox
     </script>
 
     <style type="text/css">

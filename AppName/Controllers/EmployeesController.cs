@@ -19,7 +19,7 @@ namespace AppName.Controllers
         public IActionResult Index()
         {
             //TODO: Role check
-            if (false)
+            if (true)
             {
                 var viewModel = from e in _cc.Employee
                                 join s in _cc.Supervisor on e.SupervisorID equals s.SupervisorID
