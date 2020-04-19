@@ -22,28 +22,29 @@
         <!-- TODO: Create working View and Delete links to put in table -->
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
-                    @Html.DisplayFor(modelItem => item.Employee.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee.EmployeeID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Supervisor.FirstName)
-                    @Html.DisplayFor(modelItem => item.Supervisor.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Form.Period)
-                </td>
-                <td>
-                    @Html.ActionLink("View", "Export", "Forms")
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "Delete")
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                @Html.DisplayFor(modelItem => item.Employee.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.EmployeeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supervisor.FirstName)
+                @Html.DisplayFor(modelItem => item.Supervisor.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Form.Period)
+            </td>
+            <td>
+                @Html.ActionLink("View", "Export", "Forms")
+            </td>
+            <td>
+                @Html.ActionLink(item.Form.Deleted ? "Restore" : "Delete", "Delete", "Forms", new { id = item.Form.FormID },
+                            new { onclick = String.Format("return confirm('Are you sure you want to {0} {1} {2} form?');", (item.Form.Deleted ? "RESTORE" : "DELETE"), item.Employee.FirstName, item.Employee.LastName) })
+            </td>
+        </tr>
         }
     </tbody>
 </table>

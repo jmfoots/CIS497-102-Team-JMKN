@@ -1,65 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppName.Models
 {
     public class Form
     {
         //Primary key
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FormID { get; set; }
 
         //Foreign key reference to Employee
+        [Required(ErrorMessage = "Employee ID is required.")]
         public int Employee { get; set; }
 
         //Foreign key reference to Supervisor
+        [Required(ErrorMessage = "Created By is required.")]
         public int CreatedBy { get; set; }
 
         //Employee's job title
+        [Required(ErrorMessage = "Job Title is required.")]
         public string Title { get; set; }
 
         //Assessment period
+        [Required(ErrorMessage = "Assessment Period is required.")]
         public string Period { get; set; }
 
         //0 = incomplete, 1 = complete
+        [System.ComponentModel.DefaultValue(false)]
         public bool Complete { get; set; }
 
         //0 = not deleted, 1 = deleted
+        [System.ComponentModel.DefaultValue(true)]
         public bool Deleted { get; set; }
 
         //Rating of 1-5
+        
         public int Communication1 { get; set; }
 
         //Rating of 1-5
+        
         public int Communication2 { get; set; }
 
         //Rating of 1-5
+        
         public int Communication3 { get; set; }
 
         //Average of above ratings
         public decimal CommunicationAvg { get; set; }
 
         //Rating of 1-5
+        
         public int Appreciation1 { get; set; }
 
         //Rating of 1-5
+        
         public int Appreciation2 { get; set; }
 
         //Rating of 1-5
+        
         public int Appreciation3 { get; set; }
 
         //Average of above ratings
         public decimal AppreciationAvg { get; set; }
 
         //Rating of 1-5
+        
         public int Development1 { get; set; }
 
         //Rating of 1-5
+        
         public int Development2 { get; set; }
 
         //Rating of 1-5
+        
         public int Development3 { get; set; }
 
         //Average of above ratings
@@ -106,7 +119,7 @@ namespace AppName.Models
 
         //Growth actions & results
         public string GrowthAr { get; set; }
-        
+
         //Summary of performance
         public string Summary { get; set; }
 

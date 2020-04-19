@@ -3,32 +3,52 @@
 @{
     ViewData["Title"] = "New Form";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
-<h2>New Form</h2>
+<h2>@(Model.FormID == 0 ? "New Form" : "Edit Form")</h2>
+
 <br />
+
 <div class="row">
     <div class="col-lg-7">
         <div class="bs-component">
-            <form autocomplete="off" asp-controller="Forms" asp-action="Save" method="post">
+            <form autocomplete="off" asp-controller="Forms" asp-action="Save" asp-route-id="@Model.FormID" method="post">
                 <!-- Name, title, and assessment period fields -->
+                @Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
                 <fieldset>
                     <div class="form-group row">
-                        <label asp-for="Employee" class="col-sm-4 col-form-label">Employee Name:</label>
+                        <label asp-for="Employee" class="col-sm-4 col-form-label">Employee ID:</label>
+
                         <div class="col-sm-8">
-                            <input asp-for="Employee" type="text" list="employees" class="form-control" placeholder="Enter Employee Name" />
+                            @*<input asp-for="Employee" type="text" list="employees" class="form-control" placeholder="Enter Employee ID" />*@
+                            @Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Employee, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="CreatedBy" class="col-sm-4 col-form-label">Created By:</label>
+                        <div class="col-sm-8">
+                            @*Placeholder value *@
+                            @*<input asp-for="CreatedBy" type="text" list="supervisors" class="form-control" placeholder="Enter Supervisor ID" value=1 readonly />*@
+                            @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control", @type = "text", @readonly = true } })
+                            @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group row">
                         <label asp-for="Title" class="col-sm-4 col-form-label">Title:</label>
                         <div class="col-sm-8">
-                            <input asp-for="Title" type="text" class="form-control" placeholder="Enter Title" />
+                            @*<input asp-for="Title" type="text" class="form-control" placeholder="Enter Title" />*@
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group row">
                         <label asp-for="Period" class="col-sm-4 col-form-label">Assessment Period:</label>
                         <div class="col-sm-8">
-                            <input asp-for="Period" type="text" class="form-control" placeholder="Enter Assessment Period" />
+                            @*<input asp-for="Period" type="text" class="form-control" placeholder="Enter Assessment Period" />*@
+                            @Html.EditorFor(model => model.Period, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Period, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </fieldset>
@@ -289,7 +309,7 @@
                     </div>
                 </fieldset>
                 <!-- Submit button -->
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to submit this form?');">Save</button>
             </form>
         </div>
     </div>
@@ -299,8 +319,8 @@
 
 @section scripts {
     <script>
-        //TODO: Populate datalist
-        //Names of employees under user as value ordered alphabetically by first name with data - value being the employee's ID
+                        //TODO: Populate datalist
+                        //Names of employees under user as value ordered alphabetically by first name with data - value being the employee's ID
     </script>
 
     <style type="text/css">

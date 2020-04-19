@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AppName.Models;
 using AppName.ViewModels;
+using System.Reflection;
 
 namespace AppName.Controllers
 {
@@ -28,21 +29,42 @@ namespace AppName.Controllers
         public IActionResult New()
         {
             //TODO: Role check
-            return View();
+            return View("New", new Supervisor {});
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
             //TODO: Role check
-            //TODO: Load information
-            return View("New");
+            return View("New", _cc.Supervisor.Find(id));
         }
 
         [HttpPost]
-        public IActionResult Save(Supervisor supervisor)
+        public IActionResult Save(Supervisor supervisor, int ID)
         {
-            //TODO: Save form
-            //TODO: Create user account
+            Supervisor sv = _cc.Supervisor.Find(ID) != null ? _cc.Supervisor.Find(ID) : supervisor;
+            PropertyInfo[] props = typeof(Supervisor).GetProperties();
+            var subgroup = props.Where(p => !p.Name.Contains("SupervisorID") && p.CanWrite);
+            foreach (PropertyInfo property in subgroup)
+            {
+                property.SetValue(sv, property.GetValue(supervisor) != null ? property.GetValue(supervisor) : "");
+            }
+
+            if (ModelState.IsValid == true)
+            {
+                if (_cc.Supervisor.Find(ID) == null) { _cc.Supervisor.Add(sv); }
+                _cc.SaveChanges();
+                return RedirectToAction("Index", "Supervisors");
+            }
+            return View("New", sv);
+        }
+        public IActionResult Delete(int id)
+        {
+            var supervisor = _cc.Supervisor.Find(id);
+            if (supervisor != null)
+            {
+                _cc.Supervisor.Remove(supervisor);
+                _cc.SaveChanges();
+            }
             return RedirectToAction("Index", "Supervisors");
         }
     }

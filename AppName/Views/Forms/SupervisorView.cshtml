@@ -37,20 +37,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Form.Period)
             </td>
-            @if (item.Form.Complete)
-            {
-                <td>
-                    Complete
-                </td>
-            }
-            else
-            {
-                <td style="color: red; font-weight: bold">
-                    Draft
-                </td>
-            }
+            <td class=@(item.Form.Complete ? ".draft-style" : "")>
+                @(item.Form.Complete ? "Complete" : "Draft")
+            </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", "Forms")
+                @Html.ActionLink("Edit", "Edit", "Forms", new { id = item.Form.FormID }, null)
             </td>
             <td>
                 @Html.ActionLink("View", "Export", "Forms")
@@ -97,6 +88,11 @@
     </script>
 
     <style type="text/css">
+        .draft-style {
+            color: red;
+            font-weight: bold;
+        }
+
         .dataTables_filter input {
             width: 116%;
         }

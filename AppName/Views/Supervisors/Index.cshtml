@@ -23,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        <!-- TODO: Create working Resend, Edit, and Delete links to put in table -->
+        <!-- TODO: Create working Resend -->
         <!-- TODO: Add account information -->
         @foreach (var item in Model)
         {
@@ -42,10 +42,11 @@
                     Yes
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Supervisors")
+                    @Html.ActionLink("Edit", "Edit", "Supervisors", new { id = item.Supervisor.SupervisorID }, null)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete")
+                    @Html.ActionLink("Delete", "Delete", "Supervisors", new { id = item.Supervisor.SupervisorID },
+                            new { onclick = String.Format("return confirm('Are you sure you want to delete {0} {1} supervisor account?');", item.Supervisor.FirstName, item.Supervisor.LastName) })
                 </td>
             </tr>
         }
@@ -73,9 +74,7 @@
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
 
-            //Create working Resend, Edit, and Delete links to put in table
-
-            //TODO: Create delete bootbox
+            //Create working Resend
     </script>
 
     <style type="text/css">
