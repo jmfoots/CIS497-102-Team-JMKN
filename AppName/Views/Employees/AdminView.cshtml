@@ -39,11 +39,11 @@
                     @Html.DisplayFor(modelItem => item.Supervisor.LastName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Employees", new { id = item.Employee.EmployeeID }, null)
+                    @Html.ActionLink("Edit", "Edit", "Employees", new { id = item.Employee.EmployeeKey }, null)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", "Employees", new { id = item.Employee.EmployeeID },
-                            new { onclick=String.Format("return confirm('Are you sure you want to delete {0} {1} employee account?');", item.Employee.FirstName, item.Employee.LastName) })
+                    @Html.ActionLink("Delete", "Delete", "Employees", new { id = item.Employee.EmployeeKey },
+                            new { onclick=String.Format("return confirm('Are you sure you want to delete {0} {1} employee?');", item.Employee.FirstName, item.Employee.LastName) })
                 </td>
             </tr>
         }

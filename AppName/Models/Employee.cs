@@ -6,8 +6,17 @@ namespace AppName.Models
     public class Employee
     {
         //Primary key
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int EmployeeID { get; set; }
+        public int EmployeeKey { get; set; }
+
+        //Employee's user-entered ID
+        [Required(ErrorMessage = "Employee ID is required.")]
+        public string EmployeeID { get; set; }
+
+        //0 = not deleted, 1 = deleted
+        [System.ComponentModel.DefaultValue(true)]
+        public bool Deleted { get; set; }
 
         //Employee's first name
         [Required(ErrorMessage = "First Name is required.")]
@@ -19,6 +28,6 @@ namespace AppName.Models
 
         //Foreign key reference to Supervisor
         [Required(ErrorMessage = "Supervisor ID is required.")]
-        public int SupervisorID { get; set; }
+        public int SupervisorKey { get; set; }
     }
 }
