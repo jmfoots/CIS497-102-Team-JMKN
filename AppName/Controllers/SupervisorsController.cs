@@ -22,7 +22,8 @@ namespace AppName.Controllers
         {
             //TODO: Role check
             var viewModel = from s in _cc.Supervisor
-                            where s.Deleted == false
+                            //Note: only showing non-deleted supervisors prevents admin restore of supervisor accounts.
+                            //where s.Deleted == false
                             orderby s.FirstName
                             select new SupervisorsListViewModel { Supervisor = s };
             return View(viewModel);
@@ -50,6 +51,8 @@ namespace AppName.Controllers
             {
                 property.SetValue(sv, property.GetValue(supervisor) != null ? property.GetValue(supervisor) : "");
             }
+
+            if (_cc.Supervisor.Any(s => s.SupervisorID == sv.SupervisorID && s.SupervisorKey != sv.SupervisorKey)) { ModelState.AddModelError(string.Empty, $"Another supervisor already exists for {sv.SupervisorID} Supervisor ID."); }
 
             if (ModelState.IsValid == true)
             {

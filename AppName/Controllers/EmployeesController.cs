@@ -26,7 +26,8 @@ namespace AppName.Controllers
             if (true)
             {
                 var viewModel = from e in _cc.Employee
-                                where e.Deleted == false
+                                    //Note: only showing non-deleted employees prevents admin restore of employee accounts. This should only be applied on SupervisorView.
+                                    //where e.Deleted == false
                                 join s in _cc.Supervisor on e.SupervisorKey equals s.SupervisorKey
                                 orderby e.FirstName
                                 select new EmployeesListViewModel { Employee = e, Supervisor = s };
@@ -65,13 +66,14 @@ namespace AppName.Controllers
         {
             Employee ep = _cc.Employee.Find(ID) != null ? _cc.Employee.Find(ID) : employee;
             PropertyInfo[] props = typeof(Employee).GetProperties();
-            var subgroup = props.Where(p => !p.Name.Contains("EmployeeKey") && p.CanWrite);
+            var subgroup = props.Where(p => !p.Name.Contains("EmployeeKey") && !p.Name.Contains("SupervisorKey") && p.CanWrite);
             foreach (PropertyInfo property in subgroup)
             {
                 property.SetValue(ep, property.GetValue(employee) != null ? property.GetValue(employee) : "");
             }
-
-            if (_cc.Supervisor.Find(ep.SupervisorKey) == null) { ModelState.AddModelError(string.Empty, $"No supervisor found for {ep.SupervisorKey} Supervisor ID."); }
+            if(_cc.Supervisor.Any(s => s.SupervisorID == ep.SupervisorID)) { ep.SupervisorKey = _cc.Supervisor.Where(s => s.SupervisorID == ep.SupervisorID).First().SupervisorKey; }
+            else { ModelState.AddModelError(string.Empty, $"No supervisor found for {ep.SupervisorID} Supervisor ID."); }
+            if (_cc.Employee.Any(e => e.EmployeeID == ep.EmployeeID && e.EmployeeKey != ep.EmployeeKey)) { ModelState.AddModelError(string.Empty, $"Another employee already exists for {ep.EmployeeID} Employee ID."); }
 
             if (ModelState.IsValid == true)
             {

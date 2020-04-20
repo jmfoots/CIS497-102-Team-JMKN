@@ -11,12 +11,19 @@ namespace AppName.Models
         public int FormID { get; set; }
 
         //Foreign key reference to Employee
-        [Required(ErrorMessage = "Employee ID is required.")]
+        [ForeignKey("Employee")]
         public int Employee { get; set; }
+        //Employee ID
+        [Required(ErrorMessage = "Employee ID is required.")]
+        public string EmployeeID { get; set; }
 
         //Foreign key reference to Supervisor
-        [Required(ErrorMessage = "Created By is required.")]
+        [ForeignKey("Supervisor")]
         public int CreatedBy { get; set; }
+
+        //Supervisor ID
+        [Required(ErrorMessage = "Created By ID is required.")]
+        public string CreatedByID { get; set; }
 
         //Employee's job title
         [Required(ErrorMessage = "Job Title is required.")]

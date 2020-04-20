@@ -15,7 +15,7 @@ namespace AppName.Models
         public string SupervisorID { get; set; }
 
         //0 = not deleted, 1 = deleted
-        [System.ComponentModel.DefaultValue(true)]
+        [System.ComponentModel.DefaultValue(false)]
         public bool Deleted { get; set; }
 
         //Supervisor's first name

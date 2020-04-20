@@ -68,13 +68,16 @@ namespace AppName.Controllers
         {
             Form form = _cc.Form.Find(ID) ?? edits;
             PropertyInfo[] props = typeof(Form).GetProperties();
-            var subgroup = props.Where(p => !p.Name.Contains("FormID") && !p.Name.Contains("SupervisorKey") && p.CanWrite);
+            var subgroup = props.Where(p => !p.Name.Contains("FormID") && !p.Name.Equals("CreatedBy") && p.CanWrite);
             foreach (PropertyInfo property in subgroup)
             {
                 property.SetValue(form, property.GetValue(edits) != null ? property.GetValue(edits) : "");
             }
 
-            if (_cc.Employee.Find(edits.Employee) != null) { form.CreatedBy = _cc.Employee.Find(edits.Employee).SupervisorKey; } else { ModelState.AddModelError(string.Empty, $"No employee found for {edits.Employee} Employee ID."); }
+            if (_cc.Supervisor.Any(s => s.SupervisorID == edits.CreatedByID)) { form.CreatedBy = _cc.Supervisor.Where(s => s.SupervisorID == edits.CreatedByID).First().SupervisorKey; }
+            else { ModelState.AddModelError(string.Empty, $"No supervisor found for {edits.CreatedByID} Supervisor ID."); }
+            if (_cc.Employee.Any(e => e.EmployeeID == edits.EmployeeID)) { form.Employee = _cc.Employee.Where(e => e.EmployeeID == edits.EmployeeID).First().EmployeeKey; }
+            else { ModelState.AddModelError(string.Empty, $"No employee found for {edits.EmployeeID} Employee ID."); }
             if (_cc.Form.Any(u => u.Employee == edits.Employee && u.FormID != form.FormID)) { ModelState.AddModelError(string.Empty, $"Another form already exists for {edits.Employee} Employee ID."); }
 
             form.Complete = evaluateComplete(form);
@@ -100,12 +103,12 @@ namespace AppName.Controllers
         bool evaluateComplete(Form form)
         {
             PropertyInfo[] props = typeof(Form).GetProperties();
-            var integers = props.Where(p => p.PropertyType == typeof(int));
+            var integers = props.Where(p => p.PropertyType == typeof(int) && !p.Name.Contains("ID") && !p.Name.Contains("Key"));
             foreach (PropertyInfo property in integers)
             {
                 if ((int) property.GetValue(form) == 0) { return false;  }
             }
-            var strings = props.Where(p => p.PropertyType == typeof(string));
+            var strings = props.Where(p => p.PropertyType == typeof(string) && !p.Name.Contains("ID") && !p.Name.Contains("Key"));
             foreach (PropertyInfo property in strings)
             {
                 if (property.GetValue(form).ToString().Length == 0 ) { return false; }

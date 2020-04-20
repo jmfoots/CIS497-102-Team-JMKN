@@ -24,7 +24,7 @@
     </thead>
     <tbody>
         <!-- TODO: Create working Edit and Delete links to put in table -->
-        @foreach (var item in Model.Where(item => item != null))
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -39,11 +39,11 @@
                     @Html.DisplayFor(modelItem => item.Supervisor.LastName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Employees", new { id = item.Employee.EmployeeKey }, null)
+                    @(!item.Employee.Deleted ? @Html.ActionLink("Edit", "Edit", "Employees", new { id = item.Employee.EmployeeKey }, null) : @Html.Label("Edit"))
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", "Employees", new { id = item.Employee.EmployeeKey },
-                            new { onclick=String.Format("return confirm('Are you sure you want to delete {0} {1} employee?');", item.Employee.FirstName, item.Employee.LastName) })
+                    @Html.ActionLink(item.Employee.Deleted ? "Restore" : "Delete", "Delete", "Employees", new { id = item.Employee.EmployeeKey },
+                            new { onclick = String.Format("return confirm('Are you sure you want to {0} {1} {2} Employee account?');", (item.Employee.Deleted ? "RESTORE" : "DELETE"), item.Employee.FirstName, item.Employee.LastName) })
                 </td>
             </tr>
         }
