@@ -17,10 +17,12 @@ namespace AppName.Controllers
         {
             _cc = cc;
         }
-            public IActionResult Index()
+
+        public IActionResult Index()
         {
             //TODO: Role check
             var viewModel = from s in _cc.Supervisor
+                            where s.Deleted == false
                             orderby s.FirstName
                             select new SupervisorsListViewModel { Supervisor = s };
             return View(viewModel);
@@ -43,7 +45,7 @@ namespace AppName.Controllers
         {
             Supervisor sv = _cc.Supervisor.Find(ID) != null ? _cc.Supervisor.Find(ID) : supervisor;
             PropertyInfo[] props = typeof(Supervisor).GetProperties();
-            var subgroup = props.Where(p => !p.Name.Contains("SupervisorID") && p.CanWrite);
+            var subgroup = props.Where(p => !p.Name.Contains("SupervisorKey") && p.CanWrite);
             foreach (PropertyInfo property in subgroup)
             {
                 property.SetValue(sv, property.GetValue(supervisor) != null ? property.GetValue(supervisor) : "");
@@ -57,12 +59,13 @@ namespace AppName.Controllers
             }
             return View("New", sv);
         }
+
         public IActionResult Delete(int id)
         {
             var supervisor = _cc.Supervisor.Find(id);
             if (supervisor != null)
             {
-                _cc.Supervisor.Remove(supervisor);
+                supervisor.Deleted = !supervisor.Deleted;
                 _cc.SaveChanges();
             }
             return RedirectToAction("Index", "Supervisors");

@@ -19,13 +19,15 @@ namespace AppName.Controllers
         {
             _cc = cc;
         }
+
         public IActionResult Index()
         {
             //TODO: Role check
             if (true)
             {
                 var viewModel = from e in _cc.Employee
-                                join s in _cc.Supervisor on e.SupervisorID equals s.SupervisorID
+                                where e.Deleted == false
+                                join s in _cc.Supervisor on e.SupervisorKey equals s.SupervisorKey
                                 orderby e.FirstName
                                 select new EmployeesListViewModel { Employee = e, Supervisor = s };
 
@@ -37,8 +39,9 @@ namespace AppName.Controllers
                 var UserID = 1;
 
                 var viewModel = from e in _cc.Employee
-                                join s in _cc.Supervisor on e.SupervisorID equals s.SupervisorID
-                                where s.SupervisorID == UserID
+                                where e.Deleted == false
+                                join s in _cc.Supervisor on e.SupervisorKey equals s.SupervisorKey
+                                where s.SupervisorKey == UserID
                                 orderby e.FirstName
                                 select new EmployeesListViewModel { Employee = e, Supervisor = s };
                 return View("SupervisorView", viewModel);
@@ -56,18 +59,19 @@ namespace AppName.Controllers
             //TODO: Role check
             return View("New", _cc.Employee.Find(id));
         }
+
         [HttpPost]
         public IActionResult Save(Employee employee, int ID)
         {
             Employee ep = _cc.Employee.Find(ID) != null ? _cc.Employee.Find(ID) : employee;
             PropertyInfo[] props = typeof(Employee).GetProperties();
-            var subgroup = props.Where(p => !p.Name.Contains("EmployeeID") && p.CanWrite);
+            var subgroup = props.Where(p => !p.Name.Contains("EmployeeKey") && p.CanWrite);
             foreach (PropertyInfo property in subgroup)
             {
                 property.SetValue(ep, property.GetValue(employee) != null ? property.GetValue(employee) : "");
             }
 
-            if (_cc.Supervisor.Find(ep.SupervisorID) == null) { ModelState.AddModelError(string.Empty, $"No supervisor found for {ep.SupervisorID} Supervisor ID."); }
+            if (_cc.Supervisor.Find(ep.SupervisorKey) == null) { ModelState.AddModelError(string.Empty, $"No supervisor found for {ep.SupervisorKey} Supervisor ID."); }
 
             if (ModelState.IsValid == true)
             {
@@ -83,7 +87,7 @@ namespace AppName.Controllers
             var employee = _cc.Employee.Find(id);
             if (employee != null)
             {
-                _cc.Employee.Remove(employee);
+                employee.Deleted = !employee.Deleted;
                 _cc.SaveChanges();
             }
             return RedirectToAction("Index", "Employees");

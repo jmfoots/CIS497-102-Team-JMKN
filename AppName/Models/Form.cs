@@ -6,6 +6,7 @@ namespace AppName.Models
     public class Form
     {
         //Primary key
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FormID { get; set; }
 

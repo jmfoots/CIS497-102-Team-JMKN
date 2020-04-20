@@ -6,8 +6,17 @@ namespace AppName.Models
     public class Supervisor
     {
         //Primary key
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int SupervisorID { get; set; }
+        public int SupervisorKey { get; set; }
+
+        //Supervisor's user-entered ID
+        [Required(ErrorMessage = "Supervisor ID is required.")]
+        public string SupervisorID { get; set; }
+
+        //0 = not deleted, 1 = deleted
+        [System.ComponentModel.DefaultValue(true)]
+        public bool Deleted { get; set; }
 
         //Supervisor's first name
         [Required(ErrorMessage = "First Name is required.")]

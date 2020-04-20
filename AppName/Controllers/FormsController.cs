@@ -16,34 +16,35 @@ namespace AppName.Controllers
         {
             _cc = cc;
         }
+
         public IActionResult Index()
         {
             //TODO: Role check
-            if (true)
+            if (false)
             {
                 var viewModel = from f in _cc.Form
-                                //where f.Complete == true
-                                //where f.Deleted == false
+                                where f.Complete == true
+                                where f.Deleted == false
                                 from e in _cc.Employee
-                                where f.Employee == e.EmployeeID
+                                where f.Employee == e.EmployeeKey
                                 from s in _cc.Supervisor
-                                where f.CreatedBy == s.SupervisorID
+                                where f.CreatedBy == s.SupervisorKey
                                 orderby e.FirstName
                                 select new FormsListViewModel { Form = f, Employee = e, Supervisor = s };
-                return View("SupervisorView", viewModel);
+                return View("AdminView", viewModel);
             }
             else
             {
                 //TODO: Get ID of user
-                var UserID = 1;
+                //var UserID = 2;
 
                 var viewModel = from f in _cc.Form
-                                where f.CreatedBy == UserID
+                                //where f.CreatedBy == UserID
                                 where f.Deleted == false
                                 from e in _cc.Employee
-                                where f.Employee == e.EmployeeID
+                                where f.Employee == e.EmployeeKey
                                 from s in _cc.Supervisor
-                                where f.CreatedBy == s.SupervisorID
+                                where f.CreatedBy == s.SupervisorKey
                                 orderby e.FirstName, f.Complete
                                 select new FormsListViewModel { Form = f, Employee = e, Supervisor = s };
                 return View("SupervisorView", viewModel);
@@ -67,13 +68,13 @@ namespace AppName.Controllers
         {
             Form form = _cc.Form.Find(ID) ?? edits;
             PropertyInfo[] props = typeof(Form).GetProperties();
-            var subgroup = props.Where(p => !p.Name.Contains("FormID") && !p.Name.Contains("SupervisorID") && p.CanWrite);
+            var subgroup = props.Where(p => !p.Name.Contains("FormID") && !p.Name.Contains("SupervisorKey") && p.CanWrite);
             foreach (PropertyInfo property in subgroup)
             {
                 property.SetValue(form, property.GetValue(edits) != null ? property.GetValue(edits) : "");
             }
 
-            if (_cc.Employee.Find(edits.Employee) != null) { form.CreatedBy = _cc.Employee.Find(edits.Employee).SupervisorID; } else { ModelState.AddModelError(string.Empty, $"No employee found for {edits.Employee} Employee ID."); }
+            if (_cc.Employee.Find(edits.Employee) != null) { form.CreatedBy = _cc.Employee.Find(edits.Employee).SupervisorKey; } else { ModelState.AddModelError(string.Empty, $"No employee found for {edits.Employee} Employee ID."); }
             if (_cc.Form.Any(u => u.Employee == edits.Employee && u.FormID != form.FormID)) { ModelState.AddModelError(string.Empty, $"Another form already exists for {edits.Employee} Employee ID."); }
 
             form.Complete = evaluateComplete(form);
@@ -95,6 +96,7 @@ namespace AppName.Controllers
             }
             return View("New", form);
         }
+
         bool evaluateComplete(Form form)
         {
             PropertyInfo[] props = typeof(Form).GetProperties();
@@ -110,6 +112,7 @@ namespace AppName.Controllers
             }
             return true;
         }
+
         decimal getAvgProperties(string root, Form form)
         {
             PropertyInfo[] props = typeof(Form).GetProperties();
@@ -136,6 +139,7 @@ namespace AppName.Controllers
             }
             return RedirectToAction("Index", "Forms");
         }
+
         //TODO: Export form and open in new tab
         /*public IActionResult Export()
         {

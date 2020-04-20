@@ -42,10 +42,10 @@
                     Yes
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Supervisors", new { id = item.Supervisor.SupervisorID }, null)
+                    @Html.ActionLink("Edit", "Edit", "Supervisors", new { id = item.Supervisor.SupervisorKey }, null)
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", "Supervisors", new { id = item.Supervisor.SupervisorID },
+                    @Html.ActionLink("Delete", "Delete", "Supervisors", new { id = item.Supervisor.SupervisorKey },
                             new { onclick = String.Format("return confirm('Are you sure you want to delete {0} {1} supervisor account?');", item.Supervisor.FirstName, item.Supervisor.LastName) })
                 </td>
             </tr>
@@ -73,8 +73,6 @@
         $.fn.dataTable.ext.classes.sPageButton = 'pagination-sm';
         $.fn.dataTable.ext.classes.sPageButtonActive = 'pagination-sm active';
         $.fn.dataTable.ext.classes.sPageButtonStaticDisabled = 'pagination-sm disabled';
-
-            //Create working Resend
     </script>
 
     <style type="text/css">
