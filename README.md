@@ -28,3 +28,16 @@ Organization: Travers Consulting at USA Health
 1. Create electronic version of paper form.
 2. Design solution for electronic submission, editing, and analysis of performance reviews.
 3. Develop C# web application.
+
+### Test Accounts
+Administrator Account:
+* Email: admin@example.com
+* Password: Test123!
+
+Supervisor Account #1:
+* Email: supervisor@example.com
+* Password: Test123!
+
+Supervisor Account #2:
+* Email: supervisor2@example.com
+* Password: Test123!
