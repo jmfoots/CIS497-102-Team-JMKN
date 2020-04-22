@@ -12,6 +12,7 @@ namespace AppName.Models
 
         //Employee's user-entered ID
         [Required(ErrorMessage = "Employee ID is required.")]
+        [MaxLength(20)]
         public string EmployeeID { get; set; }
 
         //0 = not deleted, 1 = deleted
@@ -20,10 +21,12 @@ namespace AppName.Models
 
         //Employee's first name
         [Required(ErrorMessage = "First Name is required.")]
+        [MaxLength(50)]
         public string FirstName { get; set; }
 
         //Employee's last name
         [Required(ErrorMessage = "Last Name is required.")]
+        [MaxLength(50)]
         public string LastName { get; set; }
 
         //Foreign key reference to Supervisor
@@ -31,6 +34,7 @@ namespace AppName.Models
 
         //Foreign key reference to Supervisor
         [Required(ErrorMessage = "Supervisor ID is required.")]
+        [MaxLength(20)]
         public string SupervisorID { get; set; }
     }
 }

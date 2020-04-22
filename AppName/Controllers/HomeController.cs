@@ -13,8 +13,7 @@ namespace AppName.Controllers
     {
         public IActionResult Index()
         {
-            //TODO: Logged in check
-            if (true)
+            if (User.Identity.IsAuthenticated)
             {
                 return View("LoggedInView");
             }

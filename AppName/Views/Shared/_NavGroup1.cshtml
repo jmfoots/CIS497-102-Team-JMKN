@@ -1,6 +1,5 @@
-﻿<!-- TODO: Role check -->
-<ul class="navbar-nav flex-grow-1">
-@if (true)
+﻿<ul class="navbar-nav flex-grow-1">
+@if (User.IsInRole("Administrator"))
 {
     <li class="nav-item">
         <a class="nav-link" asp-area="" asp-controller="Forms" asp-action="Index">Forms</a>
