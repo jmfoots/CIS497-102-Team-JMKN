@@ -54,13 +54,13 @@ namespace AppName.Controllers
                                 where f.Employee == e.EmployeeKey
                                 from s in _cc.Supervisor
                                 where f.CreatedBy == s.SupervisorKey
-                                orderby e.FirstName, f.Complete
+                                orderby f.Complete, e.FirstName
                                 select new FormsListViewModel { Form = f, Employee = e, Supervisor = s };
                 return View("SupervisorView", viewModel);
             }
         }
 
-        public IActionResult New()
+        public async Task<IActionResult> New()
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -69,7 +69,14 @@ namespace AppName.Controllers
 
             if (User.IsInRole("Supervisor"))
             {
-                return View("New", new Form { });
+                var UserID = await UserManager.GetUserAsync(HttpContext.User);
+                var UserKey = UserID.SupervisorKey;
+
+                var SupID = (from s in _cc.Supervisor
+                            where s.SupervisorKey == UserKey
+                            select s.SupervisorID).Single();
+
+                return View("New", new Form(SupID) { });
             }
             else
             {

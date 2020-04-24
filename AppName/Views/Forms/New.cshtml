@@ -20,7 +20,7 @@
 
                         <div class="col-sm-8">
                             @*<input asp-for="Employee" type="text" list="employees" class="form-control" placeholder="Enter Employee ID" />*@
-                            @Html.EditorFor(model => model.EmployeeID, new { htmlAttributes = new { @class = "form-control", @type = "text", @id="employeeEntry", @list="employees", @placeholder="Enter Employee ID"} })
+                            @Html.EditorFor(model => model.EmployeeID, new { htmlAttributes = new { @class = "form-control", @type = "text", @id = "employeeEntry", @placeholder = "Enter Employee ID" } })
                             @Html.ValidationMessageFor(model => model.EmployeeID, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                         <label asp-for="CreatedByID" class="col-sm-4 col-form-label">Created By ID:</label>
                         <div class="col-sm-8">
                             @*<input asp-for="CreatedBy" type="text" list="supervisors" class="form-control" placeholder="Enter Supervisor ID" value=1 readonly />*@
-                            @Html.EditorFor(model => model.CreatedByID, new { htmlAttributes = new { @class = "form-control", @type = "text", @id="supervisorEntry", @placeholder = "Enter Supervisor ID" } })
+                            @Html.DisplayFor(model => model.CreatedByID, new { htmlAttributes = new { @class = "form-control", @type = "text", @value = Model.CreatedByID } })
                             @Html.ValidationMessageFor(model => model.CreatedByID, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         <label asp-for="Title" class="col-sm-4 col-form-label">Title:</label>
                         <div class="col-sm-8">
                             @*<input asp-for="Title" type="text" class="form-control" placeholder="Enter Title" />*@
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder="Enter Title" } })
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "Enter Title" } })
                             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <label asp-for="Period" class="col-sm-4 col-form-label">Assessment Period:</label>
                         <div class="col-sm-8">
                             @*<input asp-for="Period" type="text" class="form-control" placeholder="Enter Assessment Period" />*@
-                            @Html.EditorFor(model => model.Period, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder="Enter Assessment Period" } })
+                            @Html.EditorFor(model => model.Period, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "Enter Assessment Period" } })
                             @Html.ValidationMessageFor(model => model.Period, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -305,6 +305,7 @@
                         <textarea asp-for="Opportunities" class="form-control" rows="3"></textarea>
                     </div>
                 </fieldset>
+                @Html.HiddenFor(m => m.CreatedByID)
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to submit this form?');">Save</button>
             </form>
@@ -312,16 +313,12 @@
     </div>
 </div>
 
-<datalist id="employees"></datalist>
-
 @section scripts {
     <script>
-        //TODO: Replace with actual supervisor ID
         var employeeEntry = document.getElementById("employeeEntry");
         if (employeeEntry.value == "0") {
             employeeEntry.value = "";
         }
-        //TODO: Populate datalist
     </script>
 
     <style type="text/css">

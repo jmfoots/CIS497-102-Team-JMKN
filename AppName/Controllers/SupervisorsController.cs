@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using AppName.Models;
 using AppName.ViewModels;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppName.Controllers
 {
@@ -13,12 +14,12 @@ namespace AppName.Controllers
     {
         private readonly ConnectionStringClass _cc;
 
-        public SupervisorsController(ConnectionStringClass cc)
+        public SupervisorsController(ConnectionStringClass cc, UserManager<AppUser> UserManager)
         {
             _cc = cc;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -28,8 +29,8 @@ namespace AppName.Controllers
             if (User.IsInRole("Administrator"))
             {
                 var viewModel = from s in _cc.Supervisor
-                                //Note: only showing non-deleted supervisors prevents admin restore of supervisor accounts.
-                                //where s.Deleted == false
+                                    //Note: only showing non-deleted supervisors prevents admin restore of supervisor accounts.
+                                    //where s.Deleted == false
                                 orderby s.FirstName
                                 select new SupervisorsListViewModel { Supervisor = s };
                 return View(viewModel);
