@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using AppName.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppName
 {
@@ -34,7 +35,7 @@ namespace AppName
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<IdentityAppContext>();
+            }).AddEntityFrameworkStores<IdentityAppContext>().AddDefaultTokenProviders();
 
             services.AddDbContext<IdentityAppContext>(cfg => cfg.UseSqlServer(Configuration.GetConnectionString("Myconnection")));
             services.AddDbContext<ConnectionStringClass>(options => options.UseSqlServer(Configuration.GetConnectionString("Myconnection")));

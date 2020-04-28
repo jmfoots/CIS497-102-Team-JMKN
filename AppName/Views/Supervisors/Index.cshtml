@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppName.ViewModels.SupervisorsListViewModel>
+﻿@model AppName.ViewModels.SupervisorsListViewModel
 
 @{
     ViewData["Title"] = "Supervisors";
@@ -24,8 +24,7 @@
     </thead>
     <tbody>
         <!-- TODO: Create working Resend -->
-        <!-- TODO: Add account information -->
-        @foreach (var item in Model)
+        @foreach (var item in Model.Supervisors)
         {
             <tr>
                 <td>
@@ -36,11 +35,16 @@
                     @Html.DisplayFor(modelItem => item.Supervisor.SupervisorID)
                 </td>
                 <td>
-                    example@gmail.com
+                    @Html.DisplayFor(modelItem => item.UserName)
                 </td>
-                <td>
-                    Yes
-                </td>
+                @if (item.PasswordChanged)
+                {
+                    <td>Yes</td>
+                }
+                else
+                {
+                    <td>No</td>
+                }
                 <td>
                     @(!item.Supervisor.Deleted ? @Html.ActionLink("Edit", "Edit", "Supervisors", new { id = item.Supervisor.SupervisorKey }, null) : @Html.Label("Edit"))
                 </td>

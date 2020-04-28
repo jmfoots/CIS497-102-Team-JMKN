@@ -25,9 +25,11 @@ namespace AppName.Controllers
             this.RoleManager = RoleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var UserID = await UserManager.GetUserAsync(HttpContext.User);
+            AccountModel accModel = new AccountModel(UserID.Email);
+            return View("Index", accModel);
         }
 
         [AllowAnonymous]
@@ -50,6 +52,17 @@ namespace AppName.Controllers
             var result = await SignInManager.PasswordSignInAsync(loginInfo.Email, loginInfo.Password, false, false);
             if (result.Succeeded)
             {
+                AppUser user = await UserManager.FindByEmailAsync(loginInfo.Email);
+                if (user.Deleted == true)
+                {
+                    await SignInManager.SignOutAsync();
+                    return View("LoginFailure");
+                }
+                else if (user.PasswordChanged == false)
+                {
+                    PasswordModel pwModel = new PasswordModel(loginInfo.Password, "", "");
+                    return View("ChangePasswordPrompt", pwModel);
+                }
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -71,6 +84,79 @@ namespace AppName.Controllers
         public async Task<IActionResult> Logout()
         {
             await SignInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        
+        public IActionResult ToChangePassword()
+        {
+            return View("ChangePassword");
+        }
+
+        public async Task<IActionResult> ChangePassword(PasswordModel pwModel)
+        {
+            if ((pwModel.OldPassword == null) || (pwModel.NewPassword == null) || (pwModel.NewPasswordConfirm == null))
+            {
+                ModelState.AddModelError(string.Empty, $"One or more fields were left empty.");
+                return View("ChangePassword", pwModel);
+            }
+
+            AppUser user = await UserManager.GetUserAsync(HttpContext.User);
+            var result = await UserManager.CheckPasswordAsync(user, pwModel.OldPassword);
+
+            if (result == false)
+            {
+                ModelState.AddModelError(string.Empty, $"Password is incorrect.");
+                return View("ChangePassword", pwModel);
+            }
+            else if (!(pwModel.NewPassword == pwModel.NewPasswordConfirm))
+            {
+                ModelState.AddModelError(string.Empty, $"Passwords do not match.");
+                return View("ChangePassword", pwModel);
+            }
+            else if (pwModel.NewPassword.Length < 6)
+            {
+                ModelState.AddModelError(string.Empty, $"Passwords must at least 6 characters.");
+                return View("ChangePassword", pwModel);
+            }
+
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            await UserManager.ResetPasswordAsync(user, token, pwModel.NewPassword);
+            user.PasswordChanged = true;
+            await UserManager.UpdateAsync(user);
+            return RedirectToAction("Index", "Account");
+        }
+
+        public async Task<IActionResult> ChangePasswordFromPrompt(PasswordModel pwModel)
+        {
+            if ((pwModel.OldPassword == "") || (pwModel.NewPassword == "") || (pwModel.NewPasswordConfirm == ""))
+            {
+                ModelState.AddModelError(string.Empty, $"One or more fields were left empty.");
+                return View("ChangePasswordPrompt", pwModel);
+            }
+
+            AppUser user = await UserManager.GetUserAsync(HttpContext.User);
+            var result = await UserManager.CheckPasswordAsync(user, pwModel.OldPassword);
+            
+            if (result == false)
+            {
+                ModelState.AddModelError(string.Empty, $"Password is incorrect.");
+                return View("ChangePasswordPrompt", pwModel);
+            }
+            else if (!(pwModel.NewPassword == pwModel.NewPasswordConfirm))
+            {
+                ModelState.AddModelError(string.Empty, $"Passwords do not match.");
+                return View("ChangePasswordPrompt", pwModel);
+            }
+            else if (pwModel.NewPassword.Length < 6)
+            {
+                ModelState.AddModelError(string.Empty, $"Passwords must at least 6 characters.");
+                return View("ChangePasswordPrompt", pwModel);
+            }
+
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            await UserManager.ResetPasswordAsync(user, token, pwModel.NewPassword);
+            user.PasswordChanged = true;
+            await UserManager.UpdateAsync(user);
             return RedirectToAction("Index", "Home");
         }
 

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using AppName.Models;
 using AppName.ViewModels;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppName.Controllers
 {
@@ -13,12 +15,15 @@ namespace AppName.Controllers
     {
         private readonly ConnectionStringClass _cc;
 
-        public SupervisorsController(ConnectionStringClass cc)
+        private UserManager<AppUser> UserManager { get; }
+
+        public SupervisorsController(ConnectionStringClass cc, UserManager<AppUser> UserManager)
         {
             _cc = cc;
+            this.UserManager = UserManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -27,11 +32,23 @@ namespace AppName.Controllers
 
             if (User.IsInRole("Administrator"))
             {
-                var viewModel = from s in _cc.Supervisor
-                                //Note: only showing non-deleted supervisors prevents admin restore of supervisor accounts.
-                                //where s.Deleted == false
-                                orderby s.FirstName
-                                select new SupervisorsListViewModel { Supervisor = s };
+                List<Supervisor> supervisors = _cc.Supervisor.FromSqlRaw("SELECT * FROM Supervisor").ToList();
+                List<AppUser> users = await UserManager.Users.ToListAsync();
+                List<SupervisorsViewModel> multipleModel = new List<SupervisorsViewModel>();
+
+                foreach (Supervisor supervisor in supervisors)
+                {
+                    foreach (AppUser user in users)
+                    {
+                        if (supervisor.SupervisorKey == user.SupervisorKey)
+                        {
+                            SupervisorsViewModel singleModel = new SupervisorsViewModel(supervisor, user.UserName, user.PasswordChanged);
+                            multipleModel.Add(singleModel);
+                            break;
+                        }
+                    }
+                }
+                SupervisorsListViewModel viewModel = new SupervisorsListViewModel(multipleModel);
                 return View(viewModel);
             }
             else
@@ -49,7 +66,7 @@ namespace AppName.Controllers
 
             if (User.IsInRole("Administrator"))
             {
-                return View("New", new Supervisor { });
+                return View("New", new NewSupervisor(false) { });
             }
             else
             {
@@ -57,8 +74,9 @@ namespace AppName.Controllers
             }
         }
 
-        public IActionResult Edit(int id)
+        public async Task <IActionResult> Edit(int id)
         {
+            var email = "";
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("ToLogin", "Account");
@@ -66,7 +84,19 @@ namespace AppName.Controllers
 
             if (User.IsInRole("Administrator"))
             {
-                return View("New", _cc.Supervisor.Find(id));
+                Supervisor supervisor = _cc.Supervisor.Find(id);
+
+                var users = await UserManager.GetUsersInRoleAsync("Supervisor");
+                foreach (var user in users)
+                {
+                    if (user.SupervisorKey == id)
+                    {
+                        email = user.Email;
+                    }
+                }
+
+                NewSupervisor newSupervisor = new NewSupervisor(supervisor.SupervisorKey, supervisor.SupervisorID, supervisor.Deleted, supervisor.FirstName, supervisor.LastName, email, true);
+                return View("New", newSupervisor);
             }
             else
             {
@@ -75,7 +105,7 @@ namespace AppName.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(Supervisor supervisor, int ID)
+        public async Task<IActionResult> Save(NewSupervisor newSupervisor, int ID)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -84,6 +114,7 @@ namespace AppName.Controllers
 
             if (User.IsInRole("Administrator"))
             {
+                Supervisor supervisor = new Supervisor(newSupervisor.SupervisorID, newSupervisor.Deleted, newSupervisor.FirstName, newSupervisor.LastName);
                 Supervisor sv = _cc.Supervisor.Find(ID) != null ? _cc.Supervisor.Find(ID) : supervisor;
                 PropertyInfo[] props = typeof(Supervisor).GetProperties();
                 var subgroup = props.Where(p => !p.Name.Contains("SupervisorKey") && p.CanWrite);
@@ -93,14 +124,52 @@ namespace AppName.Controllers
                 }
 
                 if (_cc.Supervisor.Any(s => s.SupervisorID == sv.SupervisorID && s.SupervisorKey != sv.SupervisorKey)) { ModelState.AddModelError(string.Empty, $"Another supervisor already exists for {sv.SupervisorID} Supervisor ID."); }
-
-                if (ModelState.IsValid == true)
+                if (newSupervisor.Edit == false)
                 {
-                    if (_cc.Supervisor.Find(ID) == null) { _cc.Supervisor.Add(sv); }
+                    AppUser user = await UserManager.FindByEmailAsync(newSupervisor.Email);
+                    if (user != null)
+                    {
+                        ModelState.AddModelError(string.Empty, $"An account already exists with this email.");
+                    }
+                    else
+                    {
+                        user = new AppUser();
+                        user.UserName = newSupervisor.Email;
+                        user.Email = newSupervisor.Email;
+                        user.PasswordChanged = false;
+                        user.Deleted = false;
+                    }
+
+                    if (ModelState.IsValid == true)
+                    {
+                        if (_cc.Supervisor.Find(ID) == null) { _cc.Supervisor.Add(sv); }
+                        _cc.SaveChanges();
+
+                        var SupKey = (from s in _cc.Supervisor
+                                      where s.SupervisorID == newSupervisor.SupervisorID
+                                      select s.SupervisorKey).Single();
+                        user.SupervisorKey = SupKey;
+                        IdentityResult result = await UserManager.CreateAsync(user, "Test123!");
+
+                        if (result.Succeeded)
+                        {
+                            var roleResult = await UserManager.AddToRoleAsync(user, "Supervisor");
+                        }
+
+                        return RedirectToAction("Index", "Supervisors");
+                    }
+                }
+                else
+                {
+                    sv.FirstName = supervisor.FirstName;
+                    sv.LastName = supervisor.LastName;
+                    sv.SupervisorID = supervisor.SupervisorID;
                     _cc.SaveChanges();
+
                     return RedirectToAction("Index", "Supervisors");
                 }
-                return View("New", sv);
+                
+                return View("New", newSupervisor);
             }
             else
             {
@@ -108,8 +177,9 @@ namespace AppName.Controllers
             }
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            AppUser targetUser = null;
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("ToLogin", "Account");
@@ -123,6 +193,17 @@ namespace AppName.Controllers
                     supervisor.Deleted = !supervisor.Deleted;
                     _cc.SaveChanges();
                 }
+
+                var users = await UserManager.GetUsersInRoleAsync("Supervisor");
+                foreach (var user in users)
+                {
+                    if (user.SupervisorKey == id)
+                    {
+                        targetUser = user;
+                    }
+                }
+                targetUser.Deleted = !targetUser.Deleted;
+                await UserManager.UpdateAsync(targetUser);
                 return RedirectToAction("Index", "Supervisors");
             }
             else

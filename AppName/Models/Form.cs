@@ -5,6 +5,13 @@ namespace AppName.Models
 {
     public class Form
     {
+        public Form(string CreatedByID)
+        {
+            this.CreatedByID = CreatedByID;
+        }
+
+        public Form() { }
+
         //Primary key
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
