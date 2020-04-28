@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppName.Models;
 
 namespace AppName.ViewModels
 {
     public class SupervisorsListViewModel
     {
-        public Supervisor Supervisor { get; set; }
+        public SupervisorsListViewModel(List<SupervisorsViewModel> Supervisors)
+        {
+            this.Supervisors = Supervisors;
+        }
+
+        public List<SupervisorsViewModel> Supervisors { get; set; }
     }
 }

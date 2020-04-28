@@ -5,7 +5,14 @@ namespace AppName.Models
 {
     public class Supervisor
     {
-        //Primary key
+        public Supervisor(string SupervisorID, bool Deleted, string FirstName, string LastName)
+        {
+            this.SupervisorID = SupervisorID;
+            this.Deleted = Deleted;
+            this.FirstName = FirstName;
+            this.LastName = LastName;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SupervisorKey { get; set; }
