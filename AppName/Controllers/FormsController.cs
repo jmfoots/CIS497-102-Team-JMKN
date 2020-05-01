@@ -101,6 +101,15 @@ namespace AppName.Controllers
             }
         }
 
+        public IActionResult View(int id)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("ToLogin", "Account");
+            }
+            return View("View", _cc.Form.Find(id));
+        }
+
         [HttpPost]
         public IActionResult Save(Form edits, int ID)
         {
